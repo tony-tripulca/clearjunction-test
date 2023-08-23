@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 app.get("/transaction-reports", (req, res) => {
   let hash = crypto.createHash("sha512");
   let payload = {
-    walletUuid: "348e11ab-dbfb-4ae8-99e7-349b00868f6f",
+    walletUuid: process.env.WALLET_ID,
     timestampFrom: "2017-09-05T00:00:00+00:00",
     timestampTo: "2017-09-12T00:00:00+00:00",
   };
