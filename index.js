@@ -22,15 +22,16 @@ app.get("/", (req, res) => {
 
 app.get("/transaction-reports", (req, res) => {
   let hash = crypto.createHash("sha512");
+  let payload = {
+    walletUuid: "348e11ab-dbfb-4ae8-99e7-349b00868f6f",
+    timestampFrom: "2017-09-05T00:00:00+00:00",
+    timestampTo: "2017-09-12T00:00:00+00:00",
+  };
 
   let xApiKey = process.env.X_API_KEY.toUpperCase();
   let date = new Date().toISOString();
   let hashPass = hashPassword().toUpperCase();
-  let body = JSON.stringify({
-    walletUuid: "348e11ab-dbfb-4ae8-99e7-349b00868f6f",
-    timestampFrom: "2017-09-05T00:00:00+00:00",
-    timestampTo: "2017-09-12T00:00:00+00:00",
-  });
+  let body = JSON.stringify(payload);
 
   signature = `${xApiKey}${date}${hashPass}${body}`;
   hashSignature = hash.update(signature).digest("hex");
@@ -47,7 +48,7 @@ app.get("/transaction-reports", (req, res) => {
       signature: signature,
       Authorization: hashSignature,
     },
-    data: body,
+    data: payload,
   })
     .then((response) => {
       res.send(response);
